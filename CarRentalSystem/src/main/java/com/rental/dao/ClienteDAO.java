@@ -8,7 +8,6 @@ import java.util.Properties;
 import java.io.InputStream;
 import java.io.IOException;
 
-
 public class ClienteDAO {
     private Connection connection;
 
@@ -45,6 +44,7 @@ public class ClienteDAO {
             stmt.setString(6, cliente.getCidade());
             stmt.setString(7, cliente.getEstado());
             stmt.executeUpdate();
+            connection.commit(); // Confirma a transação
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -74,33 +74,32 @@ public class ClienteDAO {
         }
         return clientes;
     }
-    
-    // Método para buscar um cliente pelo ID
-public Cliente buscarClientePorId(int idCliente) {
-    String sql = "SELECT * FROM clientes WHERE id_cliente = ?";
-    Cliente cliente = null; // Inicializa o cliente como null
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, idCliente);
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                cliente = new Cliente(
-                        rs.getInt("id_cliente"),
-                        rs.getString("email"),
-                        rs.getString("celular"),
-                        rs.getString("nome"),
-                        rs.getString("sobrenome"),
-                        rs.getString("endereco"),
-                        rs.getString("cidade"),
-                        rs.getString("estado")
-                );
-            }
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return cliente; // Retorna o cliente encontrado ou null se não encontrado
-}
 
+    // Método para buscar um cliente pelo ID
+    public Cliente buscarClientePorId(int idCliente) {
+        String sql = "SELECT * FROM clientes WHERE id_cliente = ?";
+        Cliente cliente = null;
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    cliente = new Cliente(
+                            rs.getInt("id_cliente"),
+                            rs.getString("email"),
+                            rs.getString("celular"),
+                            rs.getString("nome"),
+                            rs.getString("sobrenome"),
+                            rs.getString("endereco"),
+                            rs.getString("cidade"),
+                            rs.getString("estado")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cliente;
+    }
 
     // Método para atualizar um cliente
     public void atualizarCliente(Cliente cliente) {
@@ -115,6 +114,7 @@ public Cliente buscarClientePorId(int idCliente) {
             stmt.setString(7, cliente.getEstado());
             stmt.setInt(8, cliente.getIdCliente());
             stmt.executeUpdate();
+            connection.commit(); // Confirma a transação
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -126,6 +126,18 @@ public Cliente buscarClientePorId(int idCliente) {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idCliente);
             stmt.executeUpdate();
+            connection.commit(); // Confirma a transação
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Fechar a conexão ao final da aplicação
+    public void close() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

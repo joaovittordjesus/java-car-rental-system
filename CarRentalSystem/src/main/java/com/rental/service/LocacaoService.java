@@ -2,6 +2,8 @@ package com.rental.service;
 
 import com.rental.dao.LocacaoDAO;
 import com.rental.model.Locacao;
+import java.util.Date;
+import java.util.List;
 
 public class LocacaoService {
 
@@ -9,8 +11,7 @@ public class LocacaoService {
 
     // Construtor da classe LocacaoService
     public LocacaoService() {
-        // Inicializa o DAO que será utilizado para acessar o banco de dados
-        this.locacaoDAO = new LocacaoDAO();
+        this.locacaoDAO = new LocacaoDAO(); // Inicializa o DAO que será utilizado para acessar o banco de dados
     }
 
     // Método para realizar uma locação
@@ -43,15 +44,15 @@ public class LocacaoService {
             return false;
         }
 
-        // Verifica se a data de início é válida (nula ou no passado não são permitidas)
-        if (locacao.getDataInicio() == null || locacao.getDataInicio().isBefore(java.time.LocalDate.now())) {
-            System.out.println("Data de início inválida.");
+        // Verifica se a data de locação é válida (nula ou no passado não são permitidas)
+        if (locacao.getDataLocacao() == null || locacao.getDataLocacao().before(new Date())) {
+            System.out.println("Data de locação inválida.");
             return false;
         }
 
-        // Verifica se a data de término é válida e após a data de início
-        if (locacao.getDataFim() == null || locacao.getDataFim().isBefore(locacao.getDataInicio())) {
-            System.out.println("Data de término inválida.");
+        // Verifica se a data de devolução é válida e após a data de locação
+        if (locacao.getDataDevolucao() == null || locacao.getDataDevolucao().before(locacao.getDataLocacao())) {
+            System.out.println("Data de devolução inválida.");
             return false;
         }
 
@@ -82,7 +83,7 @@ public class LocacaoService {
         return null;
     }
 
-    // Método para cancelar uma locação (exemplo de funcionalidade adicional)
+    // Método para cancelar uma locação
     public boolean cancelarLocacao(int id) {
         try {
             // Verifica se a locação existe antes de tentar cancelar
@@ -99,6 +100,33 @@ public class LocacaoService {
             System.err.println("Erro ao cancelar locação: " + e.getMessage());
         }
         return false;
+    }
+
+    // Método para atualizar uma locação
+    public boolean atualizarLocacao(Locacao locacao) {
+        try {
+            if (validarLocacao(locacao)) {
+                locacaoDAO.atualizarLocacao(locacao); // Atualiza a locação no banco de dados
+                System.out.println("Locação atualizada com sucesso!");
+                return true;
+            }
+        } catch (Exception e) {
+            // Tratamento de exceções ao atualizar locação
+            System.err.println("Erro ao atualizar locação: " + e.getMessage());
+        }
+        return false;
+    }
+
+    // Método para listar todas as locações
+    public List<Locacao> listarLocacoes() {
+        try {
+            List<Locacao> locacoes = locacaoDAO.listarLocacoes(); // Busca todas as locações no banco de dados
+            return locacoes;
+        } catch (Exception e) {
+            // Tratamento de exceções ao listar locações
+            System.err.println("Erro ao listar locações: " + e.getMessage());
+        }
+        return null;
     }
 
     // Outros métodos relacionados à Locação podem ser adicionados aqui

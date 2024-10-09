@@ -3,17 +3,19 @@ package com.rental.model;
 import java.util.Date;
 
 public class Locacao {
-    int idLocacao;
+    private int idLocacao;
     private int idCliente;
+    private int idCarro; // Campo adicionado
     private int numeroAgencia;
     private Date dataLocacao;
     private Date dataDevolucao;
     private double valorTotal;
 
     // Construtor
-    public Locacao(int idLocacao, int idCliente, int numeroAgencia, Date dataLocacao, Date dataDevolucao, double valorTotal) {
+    public Locacao(int idLocacao, int idCliente, int idCarro, int numeroAgencia, Date dataLocacao, Date dataDevolucao, double valorTotal) {
         this.idLocacao = idLocacao;
         this.idCliente = idCliente;
+        this.idCarro = idCarro; // Inicializa o novo campo
         this.numeroAgencia = numeroAgencia;
         this.dataLocacao = dataLocacao;
         this.dataDevolucao = dataDevolucao;
@@ -35,6 +37,14 @@ public class Locacao {
 
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
+    }
+
+    public int getIdCarro() { // Getter para idCarro
+        return idCarro;
+    }
+
+    public void setIdCarro(int idCarro) { // Setter para idCarro
+        this.idCarro = idCarro;
     }
 
     public int getNumeroAgencia() {
