@@ -9,7 +9,7 @@ Este projeto tem como objetivo desenvolver um sistema informatizado para o geren
 O sistema irá fornecer funcionalidades essenciais para o gerenciamento de uma locadora de veículos, incluindo:
 - Cadastro de carros e clientes
 - Registro e controle de locações
-- Geração de comprovantes de locação
+
 
 ## Requisitos
 
