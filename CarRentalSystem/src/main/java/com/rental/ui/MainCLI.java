@@ -1,8 +1,5 @@
-package com.rental.ui;
-
-
-import com.rental.model.Carro;
 import com.rental.model.Cliente;
+import com.rental.model.Carro;
 import com.rental.model.Locacao;
 import com.rental.service.ClienteService;
 import com.rental.service.CarroService;

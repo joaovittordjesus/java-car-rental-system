@@ -25,7 +25,10 @@ public class ClienteDAO {
             String url = properties.getProperty("url");
             String user = properties.getProperty("user");
             String password = properties.getProperty("password");
-            return DriverManager.getConnection(url, user, password);
+
+            Connection conn = DriverManager.getConnection(url, user, password);
+            conn.setAutoCommit(false); // Desativa o autoCommit para controle manual de transações
+            return conn;
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             return null;
@@ -34,7 +37,7 @@ public class ClienteDAO {
 
     // Método para adicionar um cliente
     public void adicionarCliente(Cliente cliente) {
-        String sql = "INSERT INTO clientes (email, celular, nome, sobrenome, endereco, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO cliente (email, celular, nome, sobrenome, endereco, cidade, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getEmail());
             stmt.setString(2, cliente.getCelular());
@@ -46,6 +49,11 @@ public class ClienteDAO {
             stmt.executeUpdate();
             connection.commit(); // Confirma a transação
         } catch (SQLException e) {
+            try {
+                connection.rollback(); // Em caso de erro, faz o rollback
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             e.printStackTrace();
         }
     }
@@ -53,7 +61,7 @@ public class ClienteDAO {
     // Método para listar todos os clientes
     public List<Cliente> listarClientes() {
         List<Cliente> clientes = new ArrayList<>();
-        String sql = "SELECT * FROM clientes";
+        String sql = "SELECT * FROM cliente"; // Corrigido o nome da tabela
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
@@ -77,7 +85,7 @@ public class ClienteDAO {
 
     // Método para buscar um cliente pelo ID
     public Cliente buscarClientePorId(int idCliente) {
-        String sql = "SELECT * FROM clientes WHERE id_cliente = ?";
+        String sql = "SELECT * FROM cliente WHERE id_cliente = ?";
         Cliente cliente = null;
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idCliente);
@@ -103,7 +111,7 @@ public class ClienteDAO {
 
     // Método para atualizar um cliente
     public void atualizarCliente(Cliente cliente) {
-        String sql = "UPDATE clientes SET email = ?, celular = ?, nome = ?, sobrenome = ?, endereco = ?, cidade = ?, estado = ? WHERE id_cliente = ?";
+        String sql = "UPDATE cliente SET email = ?, celular = ?, nome = ?, sobrenome = ?, endereco = ?, cidade = ?, estado = ? WHERE id_cliente = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setString(1, cliente.getEmail());
             stmt.setString(2, cliente.getCelular());
@@ -116,18 +124,28 @@ public class ClienteDAO {
             stmt.executeUpdate();
             connection.commit(); // Confirma a transação
         } catch (SQLException e) {
+            try {
+                connection.rollback(); // Em caso de erro, faz o rollback
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             e.printStackTrace();
         }
     }
 
     // Método para remover um cliente
     public void removerCliente(int idCliente) {
-        String sql = "DELETE FROM clientes WHERE id_cliente = ?";
+        String sql = "DELETE FROM cliente WHERE id_cliente = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, idCliente);
             stmt.executeUpdate();
             connection.commit(); // Confirma a transação
         } catch (SQLException e) {
+            try {
+                connection.rollback(); // Em caso de erro, faz o rollback
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
             e.printStackTrace();
         }
     }

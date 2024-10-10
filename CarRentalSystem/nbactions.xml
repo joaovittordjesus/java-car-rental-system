@@ -13,8 +13,9 @@
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>com.rental.ui.MainCLI</exec.mainClass>
+                <exec.mainClass>MainCLI</exec.mainClass>
                 <exec.executable>java</exec.executable>
+                <exec.workingdir>C:\Users\DevTarde\OneDrive - SESISENAISP - Escolas\Documents\Github\java-car-rental-system\CarRentalSystem\src\main\java\com\rental\ui</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -30,9 +31,10 @@
                 <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>com.rental.ui.MainCLI</exec.mainClass>
+                <exec.mainClass>MainCLI</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
+                <exec.workingdir>C:\Users\DevTarde\OneDrive - SESISENAISP - Escolas\Documents\Github\java-car-rental-system\CarRentalSystem\src\main\java\com\rental\ui</exec.workingdir>
             </properties>
         </action>
         <action>
@@ -47,9 +49,10 @@
             <properties>
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.mainClass>com.rental.ui.MainCLI</exec.mainClass>
+                <exec.mainClass>MainCLI</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <exec.appArgs></exec.appArgs>
+                <exec.workingdir>C:\Users\DevTarde\OneDrive - SESISENAISP - Escolas\Documents\Github\java-car-rental-system\CarRentalSystem\src\main\java\com\rental\ui</exec.workingdir>
             </properties>
         </action>
     </actions>
